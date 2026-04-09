@@ -1,0 +1,9 @@
+{
+  "name": "Boardwalk Studio",
+  "short_name": "Boardwalk",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050509",
+  "theme_color": "#f5d36b",
+  "icons": []
+}
