@@ -5,6 +5,7 @@ import Editor from "./components/Editor.js";
 import RunDeployPanel from "./components/RunDeployPanel.js";
 import PreviewPanel from "./components/PreviewPanel.js";
 import PluginSlots from "./components/PluginSlots.js";
+import CloudflarePanel from "./components/CloudflarePanel.js";
 
 const { useState, useEffect } = React;
 
@@ -129,7 +130,9 @@ function StudioApp() {
 
           <button
             className="btn btn-ghost"
-            onClick={() => setView(view === "studio" ? "capabilities" : "studio")}
+            onClick={() =>
+              setView(view === "studio" ? "capabilities" : "studio")
+            }
           >
             {view === "studio" ? "Capabilities" : "Studio"}
           </button>
@@ -156,10 +159,9 @@ function StudioApp() {
             saveFile={saveFile}
           />
 
-          {/* RIGHT: RUN / DEPLOY / GITHUB / ERRORS */}
+          {/* RIGHT: RUN / DEPLOY / CLOUDFLARE / PLUGINS */}
           <RunDeployPanel project={project} API_BASE={API_BASE} />
-
-          {/* PLUGIN SLOTS */}
+          <CloudflarePanel project={project} API_BASE={API_BASE} />
           <PluginSlots plugins={plugins} />
         </main>
       )}
