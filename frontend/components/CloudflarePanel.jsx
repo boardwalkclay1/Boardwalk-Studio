@@ -1,4 +1,4 @@
-export default function CloudflarePanel({ project, API_BASE }) {
+function CloudflarePanel({ project, API_BASE }) {
   const [logs, setLogs] = React.useState([]);
   const [workerLogs, setWorkerLogs] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -22,10 +22,9 @@ export default function CloudflarePanel({ project, API_BASE }) {
     });
 
     const data = await res.json();
+
     if (data.events) {
-      data.events.forEach((e) =>
-        push(`[${e.kind}] ${e.message}`)
-      );
+      data.events.forEach((e) => push(`[${e.kind}] ${e.message}`));
     } else if (data.message) {
       push(data.message);
     }
@@ -167,3 +166,6 @@ export default function CloudflarePanel({ project, API_BASE }) {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.CloudflarePanel = CloudflarePanel;
