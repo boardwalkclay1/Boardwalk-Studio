@@ -1,23 +1,32 @@
-const CACHE = "boardwalk-studio-v2"; // bump version to force fresh cache
+const CACHE = "boardwalk-studio-v3"; // bump version to force fresh cache
 
 self.addEventListener("install", (event) => {
-  // Skip waiting so new SW takes control immediately
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  // Delete ALL old caches
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.map((key) => caches.delete(key)))
     )
   );
-
   self.clients.claim();
 });
 
-// DO NOT CACHE JS FILES ANYMORE
-// Only pass-through to network
+// Network-first, but ONLY fall back to index.html for navigation requests.
+// Never return HTML for JS/CSS/etc.
 self.addEventListener("fetch", (event) => {
-  event.respondWith(fetch(event.request).catch(() => caches.match("./index.html")));
+  const req = event.request;
+
+  // If it's a navigation request (user typing URL, clicking link)
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req).catch(() => caches.match("/index.html"))
+    );
+    return;
+  }
+
+  // For everything else (JS, CSS, images, API calls):
+  // Just pass through to network. No caching.
+  event.respondWith(fetch(req));
 });
