@@ -14,8 +14,11 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-    <!-- ENTRY POINT: frontend/app.js is next to index.html inside Boardwalk-Studio/ -->
-    <script type="module" src="./frontend/app.js"></script>
+    <!-- Babel for JSX + ES imports -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Your app (same folder as index.html) -->
+    <script type="text/babel" src="./app.js"></script>
 
     <script>
       if ("serviceWorker" in navigator) {
