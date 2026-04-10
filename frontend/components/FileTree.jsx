@@ -1,10 +1,11 @@
-export default function FileTree({ files, selectedFile, openFile }) {
+function FileTree({ files, selectedFile, openFile }) {
   return (
     <section className="studio-panel">
       <div className="studio-panel-header">
         <h2>Files</h2>
         <span>{files.length} items</span>
       </div>
+
       <div className="studio-panel-body">
         <div className="file-tree">
           {files.map((item, idx) => (
@@ -26,3 +27,6 @@ export default function FileTree({ files, selectedFile, openFile }) {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.FileTree = FileTree;
