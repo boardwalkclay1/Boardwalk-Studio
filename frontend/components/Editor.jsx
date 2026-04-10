@@ -1,15 +1,11 @@
-export default function Editor({
-  selectedFile,
-  fileContent,
-  setFileContent,
-  saveFile,
-}) {
+function Editor({ selectedFile, fileContent, setFileContent, saveFile }) {
   return (
     <section className="studio-panel">
       <div className="studio-panel-header">
         <h2>Editor</h2>
         <span>{selectedFile || "No file selected"}</span>
       </div>
+
       <div className="studio-panel-body">
         <textarea
           className="editor-textarea"
@@ -31,3 +27,6 @@ export default function Editor({
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.Editor = Editor;
