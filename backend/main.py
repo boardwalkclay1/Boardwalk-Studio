@@ -11,19 +11,17 @@ from core import github as github_core
 from core import agent as agent_core
 from core import errors as errors_core
 from core import ai as ai_core
-from core import workspace as workspace_core
 from core import plugins as plugins_core
 
 app = FastAPI(title="Boardwalk Studio Backend", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # tighten later if you want
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # ---------- MODELS ----------
 
@@ -96,16 +94,16 @@ def root():
     }
 
 
-# ---------- WORKSPACE ----------
+# ---------- WORKSPACE (handled inside paths module) ----------
 
 @app.get("/api/workspace/projects")
 def list_projects():
-    return {"projects": workspace_core.list_projects()}
+    return {"projects": paths.list_projects()}
 
 
 @app.post("/api/workspace/projects")
 def create_project(req: WorkspaceCreateRequest):
-    workspace_core.create_project(req.name)
+    paths.create_project(req.name)
     return {"ok": True, "project": req.name}
 
 
@@ -159,32 +157,27 @@ def worker_logs(project: str = Query(...), limit: int = 50):
 
 @app.post("/api/cloudflare/create_d1")
 def create_d1(req: CloudflareDeployRequest):
-    result = cloudflare.create_d1(req.project)
-    return result
+    return cloudflare.create_d1(req.project)
 
 
 @app.post("/api/cloudflare/create_r2")
 def create_r2(req: CloudflareDeployRequest):
-    result = cloudflare.create_r2(req.project)
-    return result
+    return cloudflare.create_r2(req.project)
 
 
 @app.post("/api/cloudflare/create_kv")
 def create_kv(req: CloudflareDeployRequest):
-    result = cloudflare.create_kv(req.project)
-    return result
+    return cloudflare.create_kv(req.project)
 
 
 @app.post("/api/cloudflare/create_queue")
 def create_queue(req: CloudflareDeployRequest):
-    result = cloudflare.create_queue(req.project)
-    return result
+    return cloudflare.create_queue(req.project)
 
 
 @app.post("/api/cloudflare/deploy_pages")
 def deploy_pages(req: CloudflareDeployRequest):
-    result = cloudflare.deploy_pages(req.project)
-    return result
+    return cloudflare.deploy_pages(req.project)
 
 
 # ---------- GITHUB ----------
@@ -213,8 +206,7 @@ def agent_fix_errors(req: ErrorFixRequest):
 
 @app.post("/api/ai/invoke")
 def ai_invoke(req: AIInvokeRequest):
-    result = ai_core.invoke_ai(req.project, req.kind, req.payload)
-    return result
+    return ai_core.invoke_ai(req.project, req.kind, req.payload)
 
 
 # ---------- PLUGINS ----------
