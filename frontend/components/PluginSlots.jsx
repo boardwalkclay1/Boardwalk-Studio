@@ -1,4 +1,4 @@
-export default function PluginSlots({ plugins }) {
+function PluginSlots({ plugins }) {
   if (!plugins || plugins.length === 0) {
     return (
       <section className="studio-panel" style={{ marginTop: 10 }}>
@@ -6,9 +6,10 @@ export default function PluginSlots({ plugins }) {
           <h2>Plugins</h2>
           <span>0 loaded</span>
         </div>
+
         <div className="studio-panel-body">
           <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
-            No plugins registered.  
+            No plugins registered.
             Plugins can add panels, tools, analyzers, AI integrations, or UI
             extensions without modifying the core Studio.
           </div>
@@ -74,3 +75,6 @@ export default function PluginSlots({ plugins }) {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.PluginSlots = PluginSlots;
