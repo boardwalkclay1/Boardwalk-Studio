@@ -1,55 +1,37 @@
-const CACHE = "boardwalk-studio-v5";
+// ZERO-CACHE, ALWAYS-FRESH SERVICE WORKER
 
-// Install: activate immediately
-self.addEventListener("install", () => {
+self.addEventListener("install", (event) => {
+  // Activate immediately
   self.skipWaiting();
 });
 
-// Activate: clear old caches
 self.addEventListener("activate", (event) => {
+  // Delete ALL caches, permanently
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.map((key) => caches.delete(key)))
     )
   );
+
+  // Take control immediately
   self.clients.claim();
 });
 
-// Fetch handler — FINAL SAFE VERSION
+// FETCH: ALWAYS NETWORK, NEVER CACHE, NEVER FALLBACK
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // 0. NEVER touch localhost dev server (Vite)
+  // 1. Never touch localhost dev server
   if (url.origin.includes("localhost:3000")) {
-    return; // bypass SW entirely
+    return;
   }
 
-  // 1. NEVER touch API calls
+  // 2. Never touch API calls
   if (url.pathname.startsWith("/api/")) {
-    return; // let backend handle it
-  }
-
-  // 2. NEVER touch JS, CSS, images, assets
-  if (
-    req.destination === "script" ||
-    req.destination === "style" ||
-    req.destination === "image" ||
-    req.destination === "font" ||
-    req.destination === "manifest"
-  ) {
-    event.respondWith(fetch(req));
     return;
   }
 
-  // 3. ONLY handle navigation requests (SPA routing)
-  if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req).catch(() => caches.match("/index.html"))
-    );
-    return;
-  }
-
-  // 4. Everything else: pass-through
+  // 3. Always fetch from network, no caching, no fallback
   event.respondWith(fetch(req));
 });
