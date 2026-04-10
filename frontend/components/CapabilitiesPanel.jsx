@@ -1,4 +1,4 @@
-export default function CapabilitiesPanel() {
+function CapabilitiesPanel() {
   const items = [
     {
       title: "Autonomous Builder",
@@ -56,6 +56,7 @@ export default function CapabilitiesPanel() {
         <h2>Capabilities · Definitions</h2>
         <span>What this Studio can do</span>
       </div>
+
       <div className="studio-panel-body">
         {items.map((item, idx) => (
           <div key={idx} style={{ marginBottom: 10 }}>
@@ -78,3 +79,6 @@ export default function CapabilitiesPanel() {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.CapabilitiesPanel = CapabilitiesPanel;
