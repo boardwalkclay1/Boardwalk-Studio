@@ -1,9 +1,4 @@
-export default function ProjectSwitcher({
-  projects,
-  project,
-  setProject,
-  loadProjects,
-}) {
+function ProjectSwitcher({ projects, project, setProject, loadProjects }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
       <select
@@ -25,3 +20,6 @@ export default function ProjectSwitcher({
     </div>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.ProjectSwitcher = ProjectSwitcher;
