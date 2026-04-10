@@ -1,32 +1,23 @@
-const CACHE = "boardwalk-studio-v1";
-
-const OFFLINE_ASSETS = [
-  "./",
-  "./index.html",
-  "./bw-studio.css",
-  "./app.js",
-  "./components/CapabilitiesPanel.js",
-  "./components/ProjectSwitcher.js",
-  "./components/FileTree.js",
-  "./components/Editor.js",
-  "./components/RunDeployPanel.js",
-  "./components/PreviewPanel.js",
-  "./components/PluginSlots.js",
-  "./components/CloudflarePanel.js"
-];
+const CACHE = "boardwalk-studio-v2"; // bump version to force fresh cache
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(OFFLINE_ASSETS))
-  );
+  // Skip waiting so new SW takes control immediately
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+  // Delete ALL old caches
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((key) => caches.delete(key)))
+    )
+  );
+
+  self.clients.claim();
 });
 
+// DO NOT CACHE JS FILES ANYMORE
+// Only pass-through to network
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((resp) => resp || fetch(event.request))
-  );
+  event.respondWith(fetch(event.request).catch(() => caches.match("./index.html")));
 });
