@@ -1,10 +1,11 @@
-export default function PreviewPanel() {
+function PreviewPanel() {
   return (
     <section className="studio-panel" style={{ margin: 10 }}>
       <div className="studio-panel-header">
         <h2>Live Preview</h2>
         <span>http://localhost:5173</span>
       </div>
+
       <div className="studio-panel-body">
         <iframe
           src="http://localhost:5173"
@@ -19,3 +20,6 @@ export default function PreviewPanel() {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.PreviewPanel = PreviewPanel;
