@@ -1,9 +1,11 @@
-const CACHE = "boardwalk-studio-v3"; // bump version to force fresh cache
+const CACHE = "boardwalk-studio-v4";
 
-self.addEventListener("install", (event) => {
+// Install: activate immediately
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
+// Activate: clear old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -13,12 +15,16 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Network-first, but ONLY fall back to index.html for navigation requests.
-// Never return HTML for JS/CSS/etc.
+// Fetch handler — SAFE VERSION
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // If it's a navigation request (user typing URL, clicking link)
+  // 1. NEVER touch API calls
+  if (req.url.includes("/api/")) {
+    return; // let network handle it
+  }
+
+  // 2. ONLY handle navigation requests (SPA routing)
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req).catch(() => caches.match("/index.html"))
@@ -26,7 +32,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // For everything else (JS, CSS, images, API calls):
-  // Just pass through to network. No caching.
+  // 3. Everything else: pass-through
   event.respondWith(fetch(req));
 });
