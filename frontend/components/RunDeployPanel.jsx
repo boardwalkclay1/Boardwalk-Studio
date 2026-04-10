@@ -1,4 +1,4 @@
-export default function RunDeployPanel({ project, API_BASE }) {
+function RunDeployPanel({ project, API_BASE }) {
   const [logs, setLogs] = React.useState([]);
   const [deployLogs, setDeployLogs] = React.useState([]);
   const [githubUrl, setGithubUrl] = React.useState("");
@@ -35,6 +35,7 @@ export default function RunDeployPanel({ project, API_BASE }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ project }),
     });
+
     const data = await res.json();
     (data.events || []).forEach((e) =>
       pushDeploy(`[${e.kind}] ${e.message}`)
@@ -47,6 +48,7 @@ export default function RunDeployPanel({ project, API_BASE }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ project, repo_url: githubUrl }),
     });
+
     const data = await res.json();
     (data.events || []).forEach((e) =>
       pushLog(`[${e.kind}] ${e.message}`)
@@ -64,6 +66,7 @@ export default function RunDeployPanel({ project, API_BASE }) {
         <button className="btn btn-primary" onClick={runBackend}>
           ▶ Backend
         </button>
+
         <button className="btn btn-primary" onClick={runFrontend}>
           ▶ Frontend
         </button>
@@ -83,6 +86,7 @@ export default function RunDeployPanel({ project, API_BASE }) {
           value={githubUrl}
           onChange={(e) => setGithubUrl(e.target.value)}
         />
+
         <button className="btn btn-primary" onClick={cloneRepo}>
           Clone Repo
         </button>
@@ -108,3 +112,6 @@ export default function RunDeployPanel({ project, API_BASE }) {
     </section>
   );
 }
+
+// IMPORTANT: expose globally for UMD React
+window.RunDeployPanel = RunDeployPanel;
