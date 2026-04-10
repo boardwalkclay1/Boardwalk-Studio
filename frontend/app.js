@@ -1,11 +1,11 @@
-import CapabilitiesPanel from "./components/CapabilitiesPanel.js";
-import ProjectSwitcher from "./components/ProjectSwitcher.js";
-import FileTree from "./components/FileTree.js";
-import Editor from "./components/Editor.js";
-import RunDeployPanel from "./components/RunDeployPanel.js";
-import PreviewPanel from "./components/PreviewPanel.js";
-import PluginSlots from "./components/PluginSlots.js";
-import CloudflarePanel from "./components/CloudflarePanel.js";
+import CapabilitiesPanel from "./components/CapabilitiesPanel.jsx";
+import ProjectSwitcher from "./components/ProjectSwitcher.jsx";
+import FileTree from "./components/FileTree.jsx";
+import Editor from "./components/Editor.jsx";
+import RunDeployPanel from "./components/RunDeployPanel.jsx";
+import PreviewPanel from "./components/PreviewPanel.jsx";
+import PluginSlots from "./components/PluginSlots.jsx";
+import CloudflarePanel from "./components/CloudflarePanel.jsx";
 
 const { useState, useEffect } = React;
 
